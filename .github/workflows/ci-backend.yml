@@ -1,0 +1,105 @@
+name: Backend CI
+
+on:
+  pull_request:
+    paths:
+      - 'backend/**'
+      - 'prompts/**'
+      - '.github/workflows/ci-backend.yml'
+  push:
+    branches:
+      - develop
+      - main
+    paths:
+      - 'backend/**'
+      - 'prompts/**'
+      - '.github/workflows/ci-backend.yml'
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  ci:
+    name: Lint, Typecheck, and Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: stockpulse_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Cache uv virtual environment
+        uses: actions/cache@v4
+        with:
+          path: backend/.venv
+          key: venv-${{ runner.os }}-py3.12-${{ hashFiles('backend/pyproject.toml', 'backend/uv.lock') }}
+          restore-keys: |
+            venv-${{ runner.os }}-py3.12-
+
+      - name: Install dependencies
+        # Falls back to pip install if uv.lock is not present
+        run: |
+          if [ -f uv.lock ]; then
+            uv sync --dev --frozen
+          else
+            uv pip install --system -e ".[dev]"
+          fi
+
+      - name: Lint (ruff check)
+        run: uv run ruff check .
+
+      - name: Format check (ruff format --check)
+        run: uv run ruff format --check .
+
+      - name: Typecheck (mypy)
+        run: uv run mypy app/
+
+      - name: Run migrations
+        run: uv run alembic upgrade head
+        env:
+          DATABASE_URL_SYNC: postgresql://test:test@localhost:5432/stockpulse_test
+
+      - name: Run tests (pytest)
+        run: uv run pytest --cov=app --cov-report=xml -v
+        env:
+          DATABASE_URL: postgresql+asyncpg://test:test@localhost:5432/stockpulse_test
+          DATABASE_URL_SYNC: postgresql://test:test@localhost:5432/stockpulse_test
+          SECRET_KEY: ci-test-secret-key-not-for-production
+          JWT_ALGORITHM: HS256
+          JWT_EXPIRATION_MINUTES: 60
+          ANTHROPIC_API_KEY: sk-ant-test-fake-key
+          CLAUDE_ENABLED: "false"
+          MARKET_DATA_PROVIDER: alpha_vantage
+          MARKET_DATA_API_KEY: test-market-api-key
+          APP_ENV: development
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          file: backend/coverage.xml
+          flags: backend
+          fail_ci_if_error: false

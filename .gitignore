@@ -1,0 +1,232 @@
+# =============================================================================
+# StockPulse — .gitignore
+# Covers: Node.js, Next.js, Python, FastAPI, Alembic, Docker, editors, OS
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment files — NEVER commit secrets
+# -----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.test.example
+
+# -----------------------------------------------------------------------------
+# Node.js / npm
+# -----------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+.npm
+.yarn/
+.pnp.*
+
+# -----------------------------------------------------------------------------
+# Next.js
+# -----------------------------------------------------------------------------
+.next/
+out/
+build/
+dist/
+
+# Vercel
+.vercel
+
+# Next.js static export
+/frontend/out/
+/frontend/.next/
+/frontend/build/
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.virtualenv/
+
+# uv
+uv.lock
+# Note: uv.lock CAN be committed to pin exact deps. Remove this line if you want it tracked.
+# .python-version is safe to commit for pyenv users.
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+coverage/
+htmlcov/
+nosetests.xml
+pytest.xml
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ruff
+.ruff_cache/
+
+# type stubs
+*.pyi
+
+# Pyright
+pyrightconfig.json
+
+# -----------------------------------------------------------------------------
+# Alembic
+# -----------------------------------------------------------------------------
+# Do NOT ignore alembic/versions/ — migrations must be committed
+# Ignore only local override files if present
+alembic.ini.local
+
+# -----------------------------------------------------------------------------
+# Docker
+# -----------------------------------------------------------------------------
+.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+
+# -----------------------------------------------------------------------------
+# Databases (local dev artifacts)
+# -----------------------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.sql
+# Postgres data dirs (if running locally outside Docker)
+pgdata/
+
+# Redis
+dump.rdb
+
+# -----------------------------------------------------------------------------
+# Logs
+# -----------------------------------------------------------------------------
+logs/
+*.log
+*.log.*
+npm-debug.log
+yarn-debug.log
+
+# -----------------------------------------------------------------------------
+# IDE / Editors
+# -----------------------------------------------------------------------------
+# JetBrains (PyCharm, WebStorm, etc.)
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# VS Code
+.vscode/
+# Optionally keep .vscode/settings.json and .vscode/extensions.json — remove lines below to do so
+# !.vscode/settings.json
+# !.vscode/extensions.json
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# -----------------------------------------------------------------------------
+# macOS
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+
+# -----------------------------------------------------------------------------
+# Windows
+# -----------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# -----------------------------------------------------------------------------
+# Linux
+# -----------------------------------------------------------------------------
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# -----------------------------------------------------------------------------
+# Testing / CI artifacts
+# -----------------------------------------------------------------------------
+.nyc_output/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# -----------------------------------------------------------------------------
+# Miscellaneous
+# -----------------------------------------------------------------------------
+*.bak
+*.tmp
+*.temp
+*.orig
+.cache/
+tmp/
+temp/

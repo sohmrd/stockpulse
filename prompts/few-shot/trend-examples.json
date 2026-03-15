@@ -1,0 +1,105 @@
+{
+  "_comment": "Few-shot examples for the trend-explainer prompt. Each entry contains a condensed input scenario and the ideal Claude response. Use these to calibrate tone, specificity, and JSON structure before updating prompts.",
+  "_version": "1.0.0",
+  "_last_updated": "2026-03-15",
+  "examples": [
+    {
+      "id": "trend-ex-001",
+      "description": "Clear uptrend with confirming volume — bullish example",
+      "input": {
+        "ticker": "AAPL",
+        "time_range": "1M",
+        "price_data": [
+          {"date": "2026-02-10", "open": 182.00, "high": 185.50, "low": 181.20, "close": 184.80, "volume": 52000000},
+          {"date": "2026-02-17", "open": 184.80, "high": 189.90, "low": 183.50, "close": 188.60, "volume": 68000000},
+          {"date": "2026-02-24", "open": 188.60, "high": 193.40, "low": 187.10, "close": 192.30, "volume": 71000000},
+          {"date": "2026-03-03", "open": 192.30, "high": 198.75, "low": 191.00, "close": 197.50, "volume": 79000000},
+          {"date": "2026-03-10", "open": 197.50, "high": 202.10, "low": 196.20, "close": 200.80, "volume": 85000000}
+        ],
+        "news_snippets": []
+      },
+      "ideal_response": {
+        "summary": "AAPL has been in a consistent uptrend over the past month, advancing from $184.80 to $200.80 — a gain of approximately 8.7%. Each weekly candle has closed higher than the previous, forming a clear staircase pattern of higher highs and higher lows. Volume has expanded meaningfully on each up week, rising from 52M shares to 85M shares, which strongly confirms the upward price move.",
+        "sentiment": "bullish",
+        "confidence": 0.88,
+        "key_points": [
+          "Price advanced from $184.80 to $200.80 over 5 weeks, a gain of ~8.7%.",
+          "Five consecutive weekly higher closes with no reversal weeks.",
+          "Volume expanded from 52M to 85M shares — rising volume on rising price is a bullish confirmation signal.",
+          "The $196.20 low on the week of March 10 holds as near-term support.",
+          "Price broke through the $198.75 level on strong volume (85M), which may now act as support."
+        ],
+        "support_level": 196.20,
+        "resistance_level": null,
+        "volume_signal": "confirming",
+        "disclaimer": "This is AI-generated analysis for informational purposes only. It is not financial advice. Always consult a qualified financial advisor before making investment decisions."
+      }
+    },
+    {
+      "id": "trend-ex-002",
+      "description": "Downtrend with diverging volume — bearish example",
+      "input": {
+        "ticker": "TSLA",
+        "time_range": "1M",
+        "price_data": [
+          {"date": "2026-02-10", "open": 310.00, "high": 315.20, "low": 304.50, "close": 306.80, "volume": 90000000},
+          {"date": "2026-02-17", "open": 306.80, "high": 308.90, "low": 296.10, "close": 298.40, "volume": 105000000},
+          {"date": "2026-02-24", "open": 298.40, "high": 301.50, "low": 285.60, "close": 288.90, "volume": 112000000},
+          {"date": "2026-03-03", "open": 288.90, "high": 292.30, "low": 276.40, "close": 279.50, "volume": 98000000},
+          {"date": "2026-03-10", "open": 279.50, "high": 282.00, "low": 265.80, "close": 268.30, "volume": 120000000}
+        ],
+        "news_snippets": [
+          "Tesla misses Q4 delivery estimates for the second consecutive quarter.",
+          "CEO announces restructuring of charging network division."
+        ]
+      },
+      "ideal_response": {
+        "summary": "TSLA has been in a clear downtrend over the past month, falling from $306.80 to $268.30 — a decline of approximately 12.5%. The stock has posted five consecutive weekly lower closes, with each week establishing a new 30-day low. Volume has been elevated and expanding on the down weeks, confirming selling pressure. News of missed delivery estimates and executive restructuring has coincided with the accelerated decline.",
+        "sentiment": "bearish",
+        "confidence": 0.85,
+        "key_points": [
+          "Price declined from $306.80 to $268.30 over 5 weeks, a loss of ~12.5%.",
+          "Five consecutive weekly lower closes with no relief rallies holding.",
+          "Volume spiked to 120M shares on the most recent down week — the highest in the period — confirming aggressive selling.",
+          "The $276.40 intraweek low (week of March 3) was breached, with price closing near the session low at $268.30.",
+          "Negative news: missed Q4 delivery estimates and a charging network restructuring announcement coincided with accelerated selling."
+        ],
+        "support_level": 265.80,
+        "resistance_level": 292.30,
+        "volume_signal": "confirming",
+        "disclaimer": "This is AI-generated analysis for informational purposes only. It is not financial advice. Always consult a qualified financial advisor before making investment decisions."
+      }
+    },
+    {
+      "id": "trend-ex-003",
+      "description": "Sideways consolidation with neutral signals",
+      "input": {
+        "ticker": "KO",
+        "time_range": "1M",
+        "price_data": [
+          {"date": "2026-02-10", "open": 61.20, "high": 62.80, "low": 60.50, "close": 61.90, "volume": 12000000},
+          {"date": "2026-02-17", "open": 61.90, "high": 63.10, "low": 61.00, "close": 62.30, "volume": 11500000},
+          {"date": "2026-02-24", "open": 62.30, "high": 62.95, "low": 60.80, "close": 61.40, "volume": 10800000},
+          {"date": "2026-03-03", "open": 61.40, "high": 63.20, "low": 60.90, "close": 62.10, "volume": 11200000},
+          {"date": "2026-03-10", "open": 62.10, "high": 63.05, "low": 61.10, "close": 62.50, "volume": 10500000}
+        ],
+        "news_snippets": []
+      },
+      "ideal_response": {
+        "summary": "KO has been trading in a tight sideways range over the past month, oscillating between approximately $60.50 and $63.20 with no clear directional trend. Weekly closes have ranged from $61.40 to $62.50, a spread of only 1.8%, indicating consolidation. Volume has been stable and slightly declining, which is typical for a low-volatility consolidation phase.",
+        "sentiment": "neutral",
+        "confidence": 0.75,
+        "key_points": [
+          "Price range over 5 weeks: $60.50 low to $63.20 high — a range of only $2.70 (4.4%).",
+          "Weekly closes clustered between $61.40 and $62.50 — no directional resolution.",
+          "Volume declined slightly from 12M to 10.5M shares over the period, consistent with reduced participation in a consolidating stock.",
+          "The $60.50-$61.00 zone has held as support on three tests."
+        ],
+        "support_level": 60.50,
+        "resistance_level": 63.20,
+        "volume_signal": "neutral",
+        "disclaimer": "This is AI-generated analysis for informational purposes only. It is not financial advice. Always consult a qualified financial advisor before making investment decisions."
+      }
+    }
+  ]
+}
