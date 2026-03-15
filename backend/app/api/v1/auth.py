@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import uuid
+
 import jwt
 import structlog
 from fastapi import APIRouter
 from sqlalchemy import select
 
-from app.api.deps import DBSession
+from app.api.deps import CurrentUser, DBSession
 from app.core.exceptions import ConflictError, UnauthorizedError
 from app.core.security import (
     create_access_token,
@@ -79,7 +81,7 @@ async def refresh(body: RefreshRequest, db: DBSession) -> APIResponse[TokenPair]
     except jwt.PyJWTError as exc:
         raise UnauthorizedError("Invalid or expired refresh token") from exc
 
-    stmt = select(User).where(User.id == user_id)  # type: ignore[arg-type]
+    stmt = select(User).where(User.id == uuid.UUID(user_id))
     user = (await db.execute(stmt)).scalar_one_or_none()
     if user is None or not user.is_active:
         raise UnauthorizedError("User not found or inactive")
@@ -93,6 +95,6 @@ async def refresh(body: RefreshRequest, db: DBSession) -> APIResponse[TokenPair]
 
 
 @router.get("/me", response_model=APIResponse[UserResponse])
-async def me(_db: DBSession) -> APIResponse[UserResponse]:
-    """Placeholder — returns stub. Requires CurrentUser dep (added in Sprint 2)."""
-    return APIResponse(data=None, meta={})
+async def me(user: CurrentUser) -> APIResponse[UserResponse]:
+    """Return the profile of the currently authenticated user."""
+    return APIResponse(data=UserResponse.model_validate(user))

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import uuid
 from typing import Annotated
 
 import jwt
@@ -49,7 +50,7 @@ async def get_current_user(
         logger.warning("jwt_validation_failed", error=str(exc))
         raise UnauthorizedError("Invalid or expired token") from exc
 
-    stmt = select(User).where(User.id == user_id)  # type: ignore[arg-type]
+    stmt = select(User).where(User.id == uuid.UUID(user_id))
     result = await db.execute(stmt)
     user = result.scalar_one_or_none()
 
