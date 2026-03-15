@@ -8,5 +8,4 @@
  *   - MiniSparkline  (Sprint 2) — Inline sparkline for watchlist rows
  */
 
-// Placeholder — components will be exported from here as they are built.
-export {};
+export { default as PriceChart } from "./PriceChart";

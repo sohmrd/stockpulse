@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from collections.abc import AsyncGenerator
 from typing import Annotated
 
 import jwt
@@ -70,8 +71,13 @@ def get_claude_service() -> ClaudeService:
     return ClaudeService()
 
 
-def get_market_service() -> MarketService:
-    return MarketService()
+async def get_market_service() -> AsyncGenerator[MarketService, None]:
+    """Yield a ``MarketService`` instance and close its httpx client after the request."""
+    service = MarketService()
+    try:
+        yield service
+    finally:
+        await service.close()
 
 
 def get_portfolio_service(db: DBSession) -> PortfolioService:
